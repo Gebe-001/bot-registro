@@ -118,7 +118,7 @@ client.on('interactionCreate', async (interaction) => {
       await membro.roles.add(cargo);
 
       // 👇 AQUI É A MÁGICA
-      await membro.setNickname(`${nome} / ${id}`);
+      await membro.setNickname(`${nome} | ${id}`);
 
       return interaction.update({
         content: `✅ Aprovado: <@${userId}>`,
