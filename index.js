@@ -84,7 +84,7 @@ client.on('interactionCreate', async (interaction) => {
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId(`aprovar_${interaction.user.id}`)
+        .setCustomId(`aprovar_${interaction.user.id}_${nome}_${id}`)
         .setLabel('Aprovar')
         .setStyle(ButtonStyle.Success),
 
@@ -106,12 +106,19 @@ client.on('interactionCreate', async (interaction) => {
 
     if (interaction.customId.startsWith('aprovar_')) {
 
-      const userId = interaction.customId.split('_')[1];
+      const parts = interaction.customId.split('_');
+
+      const userId = parts[1];
+      const nome = parts[2];
+      const id = parts[3];
 
       const membro = await interaction.guild.members.fetch(userId);
       const cargo = interaction.guild.roles.cache.get(config.cargoMembro);
 
       await membro.roles.add(cargo);
+
+      // 👇 AQUI É A MÁGICA
+      await membro.setNickname(`${nome} / ${id}`);
 
       return interaction.update({
         content: `✅ Aprovado: <@${userId}>`,
